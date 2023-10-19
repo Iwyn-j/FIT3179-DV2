@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Weather Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+
+    <style>
+    body {
+        font-family: 'Nunito', sans-serif;
+        background-image: linear-gradient(to right, #2b5876, #4e4376);
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .page {
+        width: 75%; 
+        margin: auto;
+    }
+
+    h1 {
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 3em; /* Larger font size */
+        font-weight: bold; /* Bold font weight */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow for the heading */
+        padding: 20px 0; 
+        margin-bottom: 60px; /* Extra space below the title */
+    }
+
+    .visualization-container {
+        background-color: rgb(255, 255, 255);
+        border: 1px solid rgba(0, 0, 0, 0.756);
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.323);
+        margin-bottom: 60px; /* More space between each visualization block */
+        overflow: hidden;
+    }
+
+    #weather-map{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #average-temperature{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #bar-chart{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #heat-map{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #line-chart{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #scatter-plot{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #uv-index{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .visualization {
+        padding: 40px;
+        text-align: center;
+        display: flex;
+        justify-content: center; /* Center along the main axis */
+        align-items: center; /* Center vertically */
+        min-height: 600px; /* Adjust height as necessary */
+    }
+
+    .description {
+        padding: 20px 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.2);
+        color: #000000;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    /* Copyright text styling */
+    .copyright {
+        text-align: center;
+        padding: 10px 0;
+        font-size: 1.0em;
+        color: rgba(255, 255, 255, 0.7);
+    }
+</style>
+
+
+
+
+
+</head>
+
+<body>
+
+    <div class="page">
+        <h1>Global Meteorological and Air Quality Visualization</h1>
+
+        <!-- Weather Map -->
+        <div class="visualization-container">
+            <div class="visualization" id="weather-map"></div>
+            <div class="description">
+                <h2>Global Weather Map</h2>
+                <p>The visualization depicts the temperature distribution in countries for 2023, measured in degrees Celsius. Regions with darker blues, such as Canada and Russia, experience cooler temperatures. In contrast, areas near the equator display lighter shades, indicating warmer climates. Australia is notably cooler, while the Antarctic region is absent from the temperature representation. This map provides a clear overview of global temperature variations during the year.</p>
+            </div>
+        </div>
+
+        <!-- Average Temperature -->
+        <div class="visualization-container">
+            <div class="visualization" id="average-temperature"></div>
+            <div class="description">
+                <h2>Average Temperature</h2>
+                <p>The graph presents a comparison of average temperatures, in Celsius, for various countries. The countries range from Bahrain to the United Arab Emirates. Notably, all displayed countries exhibit average temperatures above 30°C, indicating warm or tropical climates.</p>
+            </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="visualization-container">
+            <div class="visualization" id="bar-chart"></div>
+            <div class="description">
+                <h2>PM2.5 Concentration: A Look at the Top 10 Countries</h2>
+                <p>The graph showcases the average PM2.5 levels across ten countries. China appears to have the highest concentration, significantly surpassing the others. The values indicate varying air quality conditions, with higher PM2.5 values suggesting poorer air quality.</p>
+            </div>
+        </div>
+
+        <!-- Heat Map -->
+        <div class="visualization-container">
+            <div class="visualization" id="heat-map"></div>
+            <div class="description">
+                <h2>Comparative Humidity: An Overview of Various Countries
+                </h2>
+                <p>The chart presents the average humidity percentages across a diverse range of countries. From the data, we observe fluctuations in humidity levels, with some countries experiencing near-maximal humidity, while others, like the United States of America, exhibit significantly lower levels.</p>
+            </div>
+        </div>
+
+        <!-- Line Chart -->
+        <div class="visualization-container">
+            <div class="visualization" id="line-chart"></div>
+            <div class="description">
+                <h2>Weather Patterns: A Diverse Spectrum of Conditions</h2>
+                <p>The pie chart offers a visual representation of various weather conditions. The vast array of segments highlights the diversity and frequency of each condition, with some, like the dominant pink segment, signifying a prevalent weather type, while many others indicate a multitude of less frequent conditions.</p>
+            </div>
+        </div>
+
+        <!-- Scatter Plot -->
+        <div class="visualization-container">
+            <div class="visualization" id="scatter-plot"></div>
+            <div class="description">
+                <h2>Cross-Country Analysis: Wind Speed and Average Temperature</h2>
+                <p>The scatter plot showcases a comparison of average wind speed (in mph) against average temperatures (in °C) for a diverse range of countries. Each colored dot represents a specific country, while its size signifies the number of records or data points available. This visualization aids in discerning climatic patterns and variations across nations.</p>
+            </div>
+        </div>
+
+        <!-- UV Index -->
+        <div class="visualization-container">
+            <div class="visualization" id="uv-index"></div>
+            <div class="description">
+                <h2>Comparative Average Humidity Levels by Country</h2>
+                <p>This visualization represents the UV Index levels around the world. It's essential for understanding the potential risks of sun exposure in different regions.</p>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; Iwyn Joseph 32808917 FIT3179 Data Visualization</p>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        // Paths to your JSON files
+        var mapURL = './json/map.json';
+        var averageTempURL = './json/averageTemp.json';
+        var barChartURL = './json/barChart.json';
+        var heatMapURL = './json/heatMap.json';
+        var lineChartURL = './json/lineChart.json';
+        var scatterPlotURL = './json/scatterPlot.json';
+        var uvIndexURL = './json/Humidity.json';
+
+        // Embedding the visualizations
+        vegaEmbed('#weather-map', mapURL);
+        vegaEmbed('#average-temperature', averageTempURL);
+        vegaEmbed('#bar-chart', barChartURL);
+        vegaEmbed('#heat-map', heatMapURL);
+        vegaEmbed('#line-chart', lineChartURL);
+        vegaEmbed('#scatter-plot', scatterPlotURL);
+        vegaEmbed('#uv-index', uvIndexURL);
+    </script>
+
+</body>
+
+</html>
