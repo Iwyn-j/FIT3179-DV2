@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Butterfly chart of average humidity for random countries",
+  "data": {"url": "https://raw.githubusercontent.com/Iwyn-j/FIT3179/main/GlobalWeatherRepository.csv"},
+  "width": 600,
+  "height": 300,
+  "transform": [
+    {
+      "aggregate": [
+        {"op": "mean", "field": "humidity", "as": "avg_humidity"}
+      ],
+      "groupby": ["country"]
+    },
+    {
+      "sample": 10
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "axis": {"title": "Country"}
+    },
+    "x": {
+      "field": "avg_humidity",
+      "type": "quantitative",
+      "axis": {"title": "Average Humidity"}
+    },
+    "color": {
+      "field": "avg_humidity",
+      "type": "quantitative",
+      "legend": {"title": "Average Humidity"},
+      "scale": {"scheme": "bluegreen"}
+    },
+    "tooltip": [
+      {"field": "country", "type": "nominal"},
+      {"field": "avg_humidity", "type": "quantitative"}
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A bar chart that shows the average air quality (PM2.5) by country.",
+  "width": 600,  
+  "height": 400, 
+  "data": {"url": "https://raw.githubusercontent.com/Iwyn-j/FIT3179/main/GlobalWeatherRepository.csv"},
+  "title": {"text": "Top 10 Countries by Average PM2.5 Levels", "fontSize": 24, "font": "Arial", "color": "navy"},
+  "mark": "bar",
+  "transform": [
+    {
+      "aggregate": [{"op": "mean", "field": "air_quality_PM2.5", "as": "avg_pm25"}],
+      "groupby": ["country"]
+    },
+    {
+      "window": [
+        {"op": "rank", "as": "rank"}
+      ],
+      "sort": [{"field": "avg_pm25", "order": "descending"}]
+    },
+    {
+      "filter": "datum.rank <= 10"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "country",
+      "type": "nominal",
+      "axis": {"labelAngle": -45, "title": "Country", "titleFont": "Arial", "titleFontSize": 16, "labelFont": "Arial", "labelFontSize": 12}
+    },
+    "y": {
+      "field": "avg_pm25",
+      "type": "quantitative",
+      "axis": {"title": "Average PM2.5", "titleFont": "Arial", "titleFontSize": 16, "labelFont": "Arial", "labelFontSize": 12}
+    },
+    "color": {
+      "field": "avg_pm25",
+      "type": "quantitative",
+      "scale": {"scheme": "greens"},
+      "legend": {"title": "Average PM2.5", "titleFont": "Arial", "titleFontSize": 14, "labelFont": "Arial", "labelFontSize": 12}
+    }
+  }
+}

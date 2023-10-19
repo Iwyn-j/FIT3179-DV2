@@ -1,0 +1,73 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A heatmap showing humidity levels across 30 random countries.",
+  "data": {"url": "https://raw.githubusercontent.com/Iwyn-j/FIT3179/main/GlobalWeatherRepository.csv"},
+  "title": {"text": "Humidity Levels by Country", "fontSize": 20, "font": "Helvetica Neue", "anchor": "start"},
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "mean",
+          "field": "humidity",
+          "as": "average_humidity"
+        }
+      ],
+      "groupby": ["country"]
+    },
+    {
+      "window": [{"op": "row_number", "as": "rank"}],
+      "sort": [{"field": "average_humidity", "order": "descending"}]
+    },
+    {
+      "sample": 30
+    }
+  ],
+  "mark": "rect",
+  "encoding": {
+    "x": {
+      "field": "country",
+      "type": "nominal",
+      "axis": {
+        "title": "Country",
+        "labelAngle": -45,
+        "titleFont": "Helvetica Neue",
+        "titleFontSize": 16,
+        "labelFontSize": 12,
+        "labelLimit": 150
+      },
+      "sort": "-y"
+    },
+    "y": {
+      "field": "average_humidity",
+      "type": "quantitative",
+      "axis": {
+        "title": "Average Humidity (%)",
+        "titleFont": "Helvetica Neue",
+        "titleFontSize": 16,
+        "labelFontSize": 12
+      },
+      "bin": true
+    },
+    "color": {
+      "field": "average_humidity",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"},
+      "legend": {
+        "title": "Average Humidity",
+        "titleFont": "Helvetica Neue",
+        "titleFontSize": 14,
+        "labelFontSize": 12
+      }
+    },
+    "tooltip": [
+      {"field": "country", "type": "nominal", "title": "Country"},
+      {"field": "average_humidity", "type": "quantitative", "title": "Avg Humidity", "format": ".2f"}
+    ]
+  },
+  "width": 800,
+  "height": 400,
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"domainWidth": 1}
+  }
+}

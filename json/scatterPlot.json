@@ -1,0 +1,51 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A bubble chart showing the relationship between wind speed and temperature, sized by count for each country.",
+  "data": {"url": "https://raw.githubusercontent.com/Iwyn-j/FIT3179/main/GlobalWeatherRepository.csv"},
+  "title": {"text": "Wind Speed vs. Temperature", "fontSize": 20, "font": "Helvetica Neue"},
+  "width": 800,
+  "height": 600,
+  "transform": [
+    {"sample": 30},
+    {
+      "aggregate": [
+        {"op": "mean", "field": "temperature_celsius", "as": "average_temperature"},
+        {"op": "mean", "field": "wind_kph", "as": "average_wind"},
+        {"op": "count", "field": "*", "as": "count"}
+      ],
+      "groupby": ["country"]
+    }
+  ],
+  "mark": {"type": "circle", "opacity": 0.8},
+  "encoding": {
+    "x": {
+      "field": "average_temperature",
+      "type": "quantitative",
+      "axis": {"title": "Average Temperature (°C)", "titleFont": "Helvetica Neue", "titleFontSize": 18},
+      "scale": {"zero": false}
+    },
+    "y": {
+      "field": "average_wind",
+      "type": "quantitative",
+      "axis": {"title": "Average Wind Speed (kph)", "titleFont": "Helvetica Neue", "titleFontSize": 18},
+      "scale": {"zero": false}
+    },
+    "size": {
+      "field": "count",
+      "type": "quantitative",
+      "legend": {"title": "Record Count", "titleFont": "Helvetica Neue", "titleFontSize": 16}
+    },
+    "color": {
+      "field": "country",
+      "type": "nominal",
+      "legend": {"title": "Country", "titleFont": "Helvetica Neue", "titleFontSize": 16},
+      "scale": {"scheme": "tableau10"}
+    },
+    "tooltip": [
+      {"field": "average_temperature", "type": "quantitative"},
+      {"field": "average_wind", "type": "quantitative"},
+      {"field": "country", "type": "nominal"},
+      {"field": "count", "type": "quantitative"}
+    ]
+  }
+}
